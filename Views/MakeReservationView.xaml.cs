@@ -12,16 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WpfApp1.ViewModels;
 
-namespace WpfApp1
+namespace WpfApp1.Views
 {
     /// <summary>
-    /// MainWindow.xaml에 대한 상호 작용 논리
+    /// MakeReservationView.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MakeReservationView : UserControl
     {
-        public MainWindow()
+        public MakeReservationView()
         {
             InitializeComponent();
         }

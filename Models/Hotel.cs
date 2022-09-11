@@ -12,20 +12,20 @@ namespace WpfApp1.Models
 
         public string Name { get; }
 
-        public Hotel(string name)
+        public Hotel(string name, ReservationBook reservationBook)
         {
             Name = name;
-            reservationBook = new ReservationBook();
+            this.reservationBook = reservationBook;
         }
 
-        public IEnumerable<Reservation> GetReservationsForUser(string username)
+        public async Task<IEnumerable<Reservation>> GetReservations()
         {
-            return reservationBook.GetReservationsForUser(username);
+            return await reservationBook.GetReservations();
         }
 
-        public void MakeReservation(Reservation reservation)
+        public async Task MakeReservation(Reservation reservation)
         {
-            reservationBook.AddReservation(reservation);
+            await reservationBook.AddReservation(reservation);
         }
     }
 }
