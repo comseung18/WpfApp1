@@ -15,7 +15,7 @@ namespace WpfApp1.Commands
 {
     internal class MakeReservationCommand : AsyncCommandBase
     {
-        private readonly NavigationService reservaionViewNavigationService;
+        private readonly NavigationService<ReservationListingViewModel> reservaionViewNavigationService;
         private readonly MakeReservationViewModel makeReservationViewModel;
         private readonly HotelStore hotelStore;
 
@@ -29,7 +29,7 @@ namespace WpfApp1.Commands
 
         public MakeReservationCommand(MakeReservationViewModel makeReservationViewModel,
             HotelStore hotelStore,
-            NavigationService reservaionViewNavigationService)
+            NavigationService<ReservationListingViewModel> reservaionViewNavigationService)
         {
             this.makeReservationViewModel = makeReservationViewModel;
             this.hotelStore = hotelStore;
@@ -53,7 +53,7 @@ namespace WpfApp1.Commands
                 MessageBox.Show("Successfully reserved room.", "Success",
                     MessageBoxButton.OK, MessageBoxImage.Information);
 
-                reservaionViewNavigationService.Navigate();
+                 reservaionViewNavigationService.Navigate();
             }
             catch(ReservationConflictException)
             {

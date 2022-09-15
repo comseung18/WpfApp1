@@ -23,15 +23,22 @@ namespace WpfApp1.Commands
 
         public override async Task ExcuteAsync(object parameter)
         {
+            viewModel.IsLoading = true;
+            viewModel.ErrorMessage = string.Empty;
             try
             {
+                
                 await hotelStore.Load();
+
                 viewModel.UpdateReservations(hotelStore.Reservations);
             }
             catch (Exception)
             {
-                MessageBox.Show("Failed to load reservations.", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                viewModel.ErrorMessage = "Failed to load reservations."; 
+            }
+            finally
+            {
+                viewModel.IsLoading = false;
             }
 
         }

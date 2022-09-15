@@ -15,6 +15,7 @@ namespace WpfApp1.Stores
             get => currentViewModel;
             set
             {
+                currentViewModel?.Dispose();
                 currentViewModel = value;
                 OnCurrentViewModelChanged();
             }

@@ -11,7 +11,9 @@ namespace WpfApp1.Stores
     {
         private readonly List<Reservation> reservations;
         private readonly Hotel hotel;
-        private readonly Lazy<Task> initializeLazy;
+        private Lazy<Task> initializeLazy;
+
+        public event Action<Reservation> ReservationMade;
 
         public HotelStore(Hotel hotel)
         {
@@ -24,7 +26,16 @@ namespace WpfApp1.Stores
 
         public async Task Load()
         {
-            await initializeLazy.Value;
+            try
+            {
+                await initializeLazy.Value;
+            }
+            catch (Exception)
+            {
+                initializeLazy = new Lazy<Task>(Initialize);
+                throw;
+            }
+            
 
 
         }
@@ -34,6 +45,13 @@ namespace WpfApp1.Stores
             await hotel.MakeReservation(reservation);
 
             reservations.Add(reservation);
+
+            OnReservationMade(reservation);
+        }
+
+        private void OnReservationMade(Reservation reservation)
+        {
+            ReservationMade?.Invoke(reservation);
         }
 
         private async Task Initialize()
@@ -42,6 +60,8 @@ namespace WpfApp1.Stores
 
             this.reservations.Clear();
             this.reservations.AddRange(reservations);
+
+            // throw new Exception();
         }
     }
 }

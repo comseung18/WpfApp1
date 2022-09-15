@@ -4,8 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp1.Views"
+             xmlns:converters="clr-namespace:WpfApp1.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
@@ -25,51 +30,59 @@
                     Command="{Binding MakeReservationCommand}"/>
         </Grid>
 
-        <ListView Grid.Row="1" Margin="0 25 0 0" ItemsSource="{Binding Reservations}">
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Room ID">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding RoomID}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
+        <Grid Grid.Row="1" Margin="0 25 0 0" >
+            <TextBox Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     Text="로딩 중 입니다">
+            </TextBox>
+            <Grid Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" Visibility="{Binding HasErrorMessage, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <ListView  ItemsSource="{Binding Reservations}" Visibility="{Binding HasErrorMessage, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Room ID">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding RoomID}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
 
-                    </GridViewColumn>
-                    
-                    <GridViewColumn Header="Username">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Username}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
-                    </GridViewColumn>
+                            <GridViewColumn Header="Username">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Username}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
 
-                    <GridViewColumn Header="Start Date">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding StartDate}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
-                    </GridViewColumn>
+                            <GridViewColumn Header="Start Date">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding StartDate}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
 
-                    <GridViewColumn Header="End Date">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding EndDate}" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
+                            <GridViewColumn Header="End Date">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding EndDate}" />
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </Grid>
     </Grid>
 </UserControl>
